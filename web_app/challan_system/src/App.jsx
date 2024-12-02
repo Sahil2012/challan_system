@@ -8,11 +8,6 @@ import { LoginPage } from './pages/LoginPage';
 
 
 function App() {
-  const placements = [
-    "inside",
-    "outside",
-    "outside-left",
-  ];
 
   return (
     <LoginPage/>
