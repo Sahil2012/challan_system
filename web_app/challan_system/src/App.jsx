@@ -1,48 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import {Input} from "@nextui-org/react";
+import './App.css';
 import { LoginPage } from './pages/LoginPage';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
 
-
+// Example Protected Route Component
+function ProtectedRoute({ children }) {
+  const isAuthenticated = false; // Replace with your actual authentication logic
+  return isAuthenticated ? children : <Navigate to="/login" />;
+}
 
 function App() {
-
   return (
-    <LoginPage/>
-    // <div className="flex flex-col gap-4">
-    //   <div className="flex flex-col gap-2">
-    //     <h3 className="text-default-500 text-small">Without placeholder</h3>
-    //     <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 md:mb-0 gap-4">
-    //       {placements.map((placement) => (
-    //         <Input
-    //           key={placement}
-    //           type="email"
-    //           label="Email"
-    //           labelPlacement={placement}
-    //           description={placement}
-    //         />
-    //       ))}
-    //     </div>
-    //   </div>  
-    //   <div className="flex flex-col gap-2">
-    //     <h3 className="text-default-500 text-small">With placeholder</h3>
-    //     <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 md:mb-0 gap-4">
-    //       {placements.map((placement) => (
-    //         <Input
-    //           key={placement}
-    //           type="email"
-    //           label="Email"
-    //           labelPlacement={placement}
-    //           placeholder="Enter your email"
-    //           description={placement}
-    //         />
-    //       ))}
-    //     </div>
-    //   </div>  
-    // </div>  
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            // <ProtectedRoute>
+              <Dashboard />
+            // </ProtectedRoute>
+          }
+        />
+        <Route path="/" element={<Navigate to="/login" />} />
+      </Routes>
+    </Router>
   );
 }
 
-export default App
+export default App;

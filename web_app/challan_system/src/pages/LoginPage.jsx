@@ -13,8 +13,11 @@ export function LoginPage() {
     <div className="h-screen w-screen ">
         
     <div className="md:grid md:grid-cols-2 h-screen">
-      <div className="h-full text-start pb-10 px-36">
-        <div className="mt-8" >Challan System</div>
+      <div className="h-full text-start pb-10 pr-36 pl-24">
+        <div className="mt-8 flex gap-2 font-extrabold" >
+          <img width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/ledger.png" alt="ledger"/>
+          Challan System
+        </div>
         <div className="text-4xl mt-6" >Get Started Now</div>
         <div className="font-semibold text-xl mt-2">Sign in to your account</div>
 
