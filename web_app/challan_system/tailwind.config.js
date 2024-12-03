@@ -12,8 +12,10 @@ export default {
         // 'fade-blue':'#F8F9FD'
         'fade-blue': '#ebefff',
         'custom-blue': '#1353FE',
-        secondary:{
-          DEFAULT:'#1353FE'
+        primary:{
+          DEFAULT:'#1353FE',
+          background: '#ebefff',
+          foreground: '#ebefff'
         }
       }
     },

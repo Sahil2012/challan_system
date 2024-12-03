@@ -15,6 +15,7 @@ export default function FilterSection({
       <Input
         type="text"
         label="Client Name"
+        color="primary"
         placeholder="Serach by client name"
         startContent={
           <SearchIcon
@@ -30,6 +31,7 @@ export default function FilterSection({
           end: parseDate(endDate.toISOString().split("T")[0]),
         }}
         label="Select duration"
+        color="primary"
         className="max-w-xs drop-shadow-lg"
         onChange={(e) => {
           setEndDate(new Date(e.end.year, e.end.month - 1, e.end.day));
