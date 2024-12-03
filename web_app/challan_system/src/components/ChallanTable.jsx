@@ -119,7 +119,7 @@ export default function ChallanTable({ challanList, isLoading }) {
       <Table
         aria-label="Challan Table"
         bottomContent={
-          pages > 0 ? (
+          pages > 1 ? (
             <div className="flex w-full justify-center">
               <Pagination
                 isCompact
