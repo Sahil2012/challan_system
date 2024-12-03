@@ -13,10 +13,14 @@ import {
 } from "firebase/firestore";
 import "../firebaseConfig";
 import AnalyticsCard from "../components/AnalyticsCard";
+import FilterSection from "../components/FilterSection";
+import useDebounce from "../hooks/useDebounce";
 
 export default function Dashboard() {
   const db = getFirestore();
   const [challanSearch, setChallanSearch] = useState("");
+  const debounceChallanSearch = useDebounce(challanSearch, 500);
+
   const [isLoading, setIsLoading] = useState(true);
   const currentDate = new Date();
   const isFirstOfMonth = currentDate.getDate() === 1;
@@ -26,7 +30,7 @@ export default function Dashboard() {
 
   const [endDate, setEndDate] = useState(localDate);
   const [startDate, setStartDate] = useState(
-    isFirstOfMonth ? localDate : addDays(startOfMonth(localDate), 1)
+    addDays(startOfMonth(new Date()), 1)
   );
 
   const [challanList, setChallanList] = useState([]);
@@ -39,18 +43,18 @@ export default function Dashboard() {
   useEffect(() => {
     let q = null;
 
-    setIsLoading(true);
+    setIsLoading(true);    
 
     if (challanSearch !== "") {
-      //   q = query(
-      //     collection(db, "order_table"),
-      //     where("company_name", "==", orderSearch)
-      //   );
+      q = query(
+        collection(db, "challan_table"),
+        where("client_name", "==", challanSearch)
+      );
     } else {
       q = query(
         collection(db, "challan_table"),
         where("date", ">=", Timestamp.fromDate(addDays(startDate, -1))), // Use Firestore Timestamp
-        where("date", "<=", Timestamp.fromDate(endDate)), // Use Firestore Timestamp
+        where("date", "<=", Timestamp.fromDate(addDays(endDate, 1))), // Use Firestore Timestamp
         orderBy("date", "desc")
       );
     }
@@ -63,14 +67,14 @@ export default function Dashboard() {
       let successfulDeliveryLocal = 0;
       snapshot.forEach((doc) => {
         challanData.push({ id: doc.id, ...doc.data() });
-        
+
         totalAmountLocal += doc.data().total_amount;
 
         if (doc.data().payment_status == "Done") {
           successfulPaymentLocal++;
           totalAmountCollectedLocal += doc.data().total_amount;
         }
-        
+
         if (doc.data().delivery_status == "Done") successfulDeliveryLocal++;
       });
 
@@ -79,13 +83,13 @@ export default function Dashboard() {
       setTotalAmountCollected(totalAmountCollectedLocal);
       setSuccessfulDelivery(successfulDeliveryLocal);
       setSuccessfulPayments(successfulPaymentLocal);
-      
+
       setChallanList(challanData);
 
       setIsLoading(false);
     });
     return () => unsubscribe();
-  }, [startDate, endDate]);
+  }, [startDate, endDate, debounceChallanSearch]);
   return (
     <div>
       <AnalyticsCard
@@ -94,6 +98,13 @@ export default function Dashboard() {
         totalAmountCollected={totalAmountCollected}
         successfulPayments={successfulPayments}
         successfulDelivery={successfulDelivery}
+      />
+      <FilterSection
+        startDate={startDate}
+        endDate={endDate}
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
+        setChallanSearch={setChallanSearch}
       />
       <ChallanTable challanList={challanList} isLoading={isLoading} />
     </div>

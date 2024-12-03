@@ -15,15 +15,15 @@ export default function AnalyticsCard({totalChallan,totalAmount,totalAmountColle
                 <p className="text-xs capitalize text-default-400 font-bold">Total Amount</p>
                 <p className="capitalize font-bold text-2xl">₹ {totalAmount}</p>
             </div>
-            <div>
+            <div className="hidden sm:block">
                 <p className="text-xs capitalize text-default-400 font-bold">Total Amount Collected</p>
                 <p className="capitalize font-bold text-2xl">₹ {totalAmountCollected}</p>
             </div>
-            <div>
+            <div className="hidden md:block">
                 <p className="text-xs capitalize text-default-400 font-bold">Successful Payments</p>
                 <p className="capitalize font-bold text-2xl">{successfulPayments}</p>
             </div>
-            <div>
+            <div className="hidden md:block">
                 <p className="text-xs capitalize text-default-400 font-bold">Successful Delivery</p>
                 <p className="capitalize font-bold text-2xl">{successfulDelivery}</p>
             </div>
