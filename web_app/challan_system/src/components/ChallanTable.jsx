@@ -9,15 +9,17 @@ import {
   TableHeader,
   TableRow,
   Tooltip,
+  useDisclosure,
   User,
 } from "@nextui-org/react";
-import React from "react";
+import React, { useState } from "react";
 import { EyeIcon } from "../assets/EyeIcon";
 import { EditIcon } from "../assets/EditIcon";
 import { DeleteIcon } from "../assets/DeleteIcon";
 import { columns } from "../assets/data";
 import { format } from "date-fns";
 import FilterSection from "./FilterSection";
+import ViewChallanModal from "./ViewChallanModal";
 
 const statusColorMap = {
   Done: "success",
@@ -31,10 +33,18 @@ export default function ChallanTable({
   endDate,
   setStartDate,
   setEndDate,
-  setChallanSearch
+  setChallanSearch,
 }) {
   const [page, setPage] = React.useState(1);
   const rowsPerPage = 5;
+
+  const {
+    isOpen: isOpen,
+    onOpen: onOpen,
+    onOpenChange: onOpenChange,
+  } = useDisclosure();
+
+  const [currentChallan,setCurrentChallan] = useState(null);
 
   const renderCell = React.useCallback((challan, columnKey) => {
     const cellValue = challan[columnKey];
@@ -93,7 +103,13 @@ export default function ChallanTable({
         return (
           <div className="relative flex items-center justify-center gap-2">
             <Tooltip content="Details">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+              <span
+                className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                onClick={() => {
+                  setCurrentChallan(challan);
+                  onOpen();
+                }}
+              >
                 <EyeIcon />
               </span>
             </Tooltip>
@@ -124,60 +140,63 @@ export default function ChallanTable({
   }, [page, challanList]);
 
   return (
-    <div className="py-8 px-8">
-      <Table
-        isHeaderSticky
-        aria-label="Challan Table"
-        topContent={
-          <FilterSection
-            startDate={startDate}
-            endDate={endDate}
-            setStartDate={setStartDate}
-            setEndDate={setEndDate}
-            setChallanSearch={setChallanSearch}
-          />
-        }
-        bottomContent={
-          pages > 1 ? (
-            <div className="flex w-full justify-center">
-              <Pagination
-                isCompact
-                showControls
-                showShadow
-                color="primary"
-                page={page}
-                total={pages}
-                onChange={(page) => setPage(page)}
-              />
-            </div>
-          ) : null
-        }
-      >
-        <TableHeader columns={columns}>
-          {(column) => (
-            <TableColumn
-              key={column.uid}
-              align={column.uid === "actions" ? "center" : "start"}
-            >
-              <div className="font-extrabold">{column.name}</div>
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody
-          emptyContent={"No records to display."}
-          items={items}
-          loadingContent={<Spinner />}
-          loadingState={isLoading ? "loading" : "idle"}
+    <>
+      <div className="py-8 px-8">
+        <Table
+          isHeaderSticky
+          aria-label="Challan Table"
+          topContent={
+            <FilterSection
+              startDate={startDate}
+              endDate={endDate}
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+              setChallanSearch={setChallanSearch}
+            />
+          }
+          bottomContent={
+            pages > 1 ? (
+              <div className="flex w-full justify-center">
+                <Pagination
+                  isCompact
+                  showControls
+                  showShadow
+                  color="primary"
+                  page={page}
+                  total={pages}
+                  onChange={(page) => setPage(page)}
+                />
+              </div>
+            ) : null
+          }
         >
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+          <TableHeader columns={columns}>
+            {(column) => (
+              <TableColumn
+                key={column.uid}
+                align={column.uid === "actions" ? "center" : "start"}
+              >
+                <div className="font-extrabold">{column.name}</div>
+              </TableColumn>
+            )}
+          </TableHeader>
+          <TableBody
+            emptyContent={"No records to display."}
+            items={items}
+            loadingContent={<Spinner />}
+            loadingState={isLoading ? "loading" : "idle"}
+          >
+            {(item) => (
+              <TableRow key={item.id}>
+                {(columnKey) => (
+                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <ViewChallanModal onOpenChange={onOpenChange} isOpen={isOpen} challan={currentChallan}/>
+    </>
   );
 }
