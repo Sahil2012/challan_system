@@ -2,6 +2,7 @@ import './App.css';
 import { LoginPage } from './pages/LoginPage';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
+import Navbar from './components/Navbar';
 
 // Example Protected Route Component
 function ProtectedRoute({ children }) {
@@ -12,6 +13,7 @@ function ProtectedRoute({ children }) {
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route
