@@ -17,13 +17,22 @@ import { EditIcon } from "../assets/EditIcon";
 import { DeleteIcon } from "../assets/DeleteIcon";
 import { columns } from "../assets/data";
 import { format } from "date-fns";
+import FilterSection from "./FilterSection";
 
 const statusColorMap = {
   Done: "success",
   Pending: "warning",
 };
 
-export default function ChallanTable({ challanList, isLoading }) {
+export default function ChallanTable({
+  challanList,
+  isLoading,
+  startDate,
+  endDate,
+  setStartDate,
+  setEndDate,
+  setChallanSearch
+}) {
   const [page, setPage] = React.useState(1);
   const rowsPerPage = 5;
 
@@ -117,7 +126,17 @@ export default function ChallanTable({ challanList, isLoading }) {
   return (
     <div className="py-8 px-8">
       <Table
+        isHeaderSticky
         aria-label="Challan Table"
+        topContent={
+          <FilterSection
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+            setChallanSearch={setChallanSearch}
+          />
+        }
         bottomContent={
           pages > 1 ? (
             <div className="flex w-full justify-center">
@@ -140,7 +159,7 @@ export default function ChallanTable({ challanList, isLoading }) {
               key={column.uid}
               align={column.uid === "actions" ? "center" : "start"}
             >
-              {column.name}
+              <div className="font-extrabold">{column.name}</div>
             </TableColumn>
           )}
         </TableHeader>

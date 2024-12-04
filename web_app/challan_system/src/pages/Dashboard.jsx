@@ -3,7 +3,6 @@ import ChallanTable from "../components/ChallanTable";
 import { addDays, startOfMonth } from "date-fns";
 import {
   collection,
-  getDocs,
   getFirestore,
   onSnapshot,
   orderBy,
@@ -13,7 +12,6 @@ import {
 } from "firebase/firestore";
 import "../firebaseConfig";
 import AnalyticsCard from "../components/AnalyticsCard";
-import FilterSection from "../components/FilterSection";
 import useDebounce from "../hooks/useDebounce";
 
 export default function Dashboard() {
@@ -43,7 +41,7 @@ export default function Dashboard() {
   useEffect(() => {
     let q = null;
 
-    setIsLoading(true);    
+    setIsLoading(true);
 
     if (challanSearch !== "") {
       q = query(
@@ -92,6 +90,7 @@ export default function Dashboard() {
   }, [startDate, endDate, debounceChallanSearch]);
   return (
     <div>
+      <div className="pl-6 pt-4 text-2xl font-semibold text-custom-blue">Dashboard</div>
       <AnalyticsCard
         totalChallan={totalChallan}
         totalAmount={totalAmount}
@@ -99,14 +98,15 @@ export default function Dashboard() {
         successfulPayments={successfulPayments}
         successfulDelivery={successfulDelivery}
       />
-      <FilterSection
+      <ChallanTable
+        challanList={challanList}
+        isLoading={isLoading}
         startDate={startDate}
         endDate={endDate}
         setStartDate={setStartDate}
         setEndDate={setEndDate}
         setChallanSearch={setChallanSearch}
       />
-      <ChallanTable challanList={challanList} isLoading={isLoading} />
     </div>
   );
 }

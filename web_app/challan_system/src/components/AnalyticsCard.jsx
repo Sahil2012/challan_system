@@ -3,7 +3,7 @@ import React from "react";
 
 export default function AnalyticsCard({totalChallan,totalAmount,totalAmountCollected,successfulPayments,successfulDelivery}) {
   return (
-    <div className="px-8 pt-8">
+    <div className="px-8 pt-4">
       <Card>
         <CardBody>
           <div className="flex justify-between items-center px-4 py-4">
