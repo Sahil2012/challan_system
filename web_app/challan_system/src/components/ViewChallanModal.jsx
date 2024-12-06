@@ -22,10 +22,10 @@ export default function ViewChallanModal({ isOpen, onOpenChange, challan }) {
     <div>
       <Modal
         backdrop="blur"
-        size="2xl"
+        size="3xl"
         isOpen={isOpen}
         radius="lg"
-        scrollBehavior="outside"
+        scrollBehavior="inside"
         onOpenChange={onOpenChange}
 
         className={{
