@@ -22,12 +22,11 @@ export default function ViewChallanModal({ isOpen, onOpenChange, challan }) {
     <div>
       <Modal
         backdrop="blur"
-        size="2xl"
+        size="3xl"
         isOpen={isOpen}
         radius="lg"
-        scrollBehavior="outside"
+        scrollBehavior="inside"
         onOpenChange={onOpenChange}
-
         className={{
           base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]",
           header: "border-b-[1px] border-[#292f46]",
@@ -58,7 +57,7 @@ export default function ViewChallanModal({ isOpen, onOpenChange, challan }) {
                 </div>
               </ModalHeader>
               <Divider />
-              <ModalBody>
+              <ModalBody className="overflow-auto scrollbar-hide">
                 <div className="flex justify-between items-center">
                   <div className="flex-1">
                     <p className="text-xs capitalize text-default-400">
