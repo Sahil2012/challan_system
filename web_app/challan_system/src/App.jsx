@@ -3,6 +3,7 @@ import { LoginPage } from './pages/LoginPage';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Navbar from './components/Navbar';
+import CreateChallan from './pages/CreateChallan';
 
 // Example Protected Route Component
 function ProtectedRoute({ children }) {
@@ -21,6 +22,14 @@ function App() {
           element={
             // <ProtectedRoute>
               <Dashboard />
+            // </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create"
+          element={
+            // <ProtectedRoute>
+              <CreateChallan />
             // </ProtectedRoute>
           }
         />
