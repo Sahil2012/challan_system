@@ -15,7 +15,7 @@ import {
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
 const steps = [
   {
@@ -67,27 +67,32 @@ export default function CreateChallan() {
 
   return (
     <div>
-      <Spacer y={16} />
-      <Stepper activeStep={currStep} alternativeLabel>
+      <Spacer y={18} />
+      <Spacer y={4} />
+      <div className="flex items-center justify-center">
+        <Card className="w-[95%] max-h-[60%]">
+          <CardHeader>
+            <div className="flex justify-between w-[100%]">
+            <div className="flex items-center">
+            <span className="py-2 px-2 text-primary font-bold text-xl capitalize">
+              {steps[currStep].title}
+            </span>
+            </div>
+            <div className="w-[70%]">
+            <Stepper activeStep={currStep} alternativeLabel>
         {steps.map((label) => (
           <Step key={label.id}>
             <StepLabel>{label.title}</StepLabel>
           </Step>
         ))}
       </Stepper>
-
-      <Spacer y={16} />
-      <div className="flex items-center justify-center">
-        <Card className="w-[90%] max-h-[60%]">
-          <CardHeader>
-            <span className="py-2 px-2 text-primary font-bold text-xl capitalize">
-              {steps[currStep].title}
-            </span>
+            </div>
+            </div>
           </CardHeader>
           <Divider />
           <CardBody className="overflow-y-auto"
             style={{
-              maxHeight: "300px"
+              maxHeight: "500px"
             }}>
             <form className="overflow-auto scrollbar-hide">
               {currStep == 0 && (
@@ -148,12 +153,18 @@ export default function CreateChallan() {
                 disabled={currStep == steps.length - 1}
                 color="primary"
                 variant="bordered"
+                className="group hover:bg-primary"
                 onClick={() => {
                   setPrevStep(currStep);
                   setCurrStep(currStep + 1);
                 }}
               >
-                <KeyboardArrowRightIcon />
+                <KeyboardArrowRightIcon  sx={{
+          color: "primary", // Default color
+          ".group:hover &": {
+            color: "white", // Hover color
+          } // Optional: Smooth transition
+        }}/>
               </Button>
             </div>
           </CardFooter>
