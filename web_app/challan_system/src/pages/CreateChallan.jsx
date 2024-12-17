@@ -44,20 +44,21 @@ export default function CreateChallan() {
     setValue,
     watch,
     formState: { error },
-  } = useForm( {
+  } = useForm({
     defaultValues: {
-      items: [{
-        itemName: "",
-      quantity: "",
-      mrp: "",
-      sellingPrice: ""
-      }],
+      items: [
+        {
+          itemName: "",
+          quantity: "",
+          mrp: "",
+          sellingPrice: "",
+        },
+      ],
       totalMRP: 0,
       totalSellingPrice: 0,
-      finalAmount:0
+      finalAmount: 0,
     },
   });
-
 
   const [currStep, setCurrStep] = useState(0);
   const [prevStep, setPrevStep] = useState(0);
@@ -85,10 +86,12 @@ export default function CreateChallan() {
             </span>
           </CardHeader>
           <Divider />
-          <CardBody className="overflow-y-auto"
+          <CardBody
+            className="overflow-y-auto"
             style={{
-              maxHeight: "300px"
-            }}>
+              maxHeight: "300px",
+            }}
+          >
             <form className="overflow-auto scrollbar-hide">
               {currStep == 0 && (
                 <motion.div
@@ -105,7 +108,7 @@ export default function CreateChallan() {
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
-                  <AddItemsStep control={control} setValue={setValue}/>
+                  <AddItemsStep control={control} setValue={setValue} />
                 </motion.div>
               )}
               {currStep == 2 && (
