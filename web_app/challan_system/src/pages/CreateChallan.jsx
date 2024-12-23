@@ -15,7 +15,9 @@ import {
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
+import ConfirmChallanStep from "../components/ConfirmChallanStep";
+import {CalendarDate, parseDate} from "@internationalized/date";
 
 const steps = [
   {
@@ -43,53 +45,62 @@ export default function CreateChallan() {
     control,
     setValue,
     watch,
+    getValues,
     formState: { error },
   } = useForm({
     defaultValues: {
+      challan_id: "",
+      company_name: "",
+      client_name: "",
       items: [
-        {
-          itemName: "",
-          quantity: "",
-          mrp: "",
-          sellingPrice: "",
-        },
+        
       ],
       totalMRP: 0,
       totalSellingPrice: 0,
       finalAmount: 0,
+      delivery_status: "not_delivered",
+      payment_status: "pending",
+      payment_mode: "",
+      payment_reference: "",
+      payment_date: parseDate(new Date().toISOString().split('T')[0]),
     },
   });
+
 
   const [currStep, setCurrStep] = useState(0);
   const [prevStep, setPrevStep] = useState(0);
   const delta = currStep - prevStep;
 
-  // console.log(watch("client_name"));
 
   return (
     <div>
-      <Spacer y={16} />
-      <Stepper activeStep={currStep} alternativeLabel>
-        {steps.map((label) => (
-          <Step key={label.id}>
-            <StepLabel>{label.title}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-
-      <Spacer y={16} />
+      <Spacer y={18} />
+      <Spacer y={4} />
       <div className="flex items-center justify-center">
-        <Card className="w-[90%] max-h-[60%]">
+        <Card className="w-[90%] max-h-[50%]">
           <CardHeader>
-            <span className="py-2 px-2 text-primary font-bold text-xl capitalize">
-              {steps[currStep].title}
-            </span>
+            <div className="flex justify-between w-[100%]">
+              <div className="flex items-center">
+                <span className="py-2 px-2 text-primary font-bold text-xl capitalize">
+                  {steps[currStep].title}
+                </span>
+              </div>
+              <div className="w-[70%]">
+                <Stepper activeStep={currStep} alternativeLabel>
+                  {steps.map((label) => (
+                    <Step key={label.id}>
+                      <StepLabel>{label.title}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </div>
+            </div>
           </CardHeader>
           <Divider />
           <CardBody
             className="overflow-y-auto"
             style={{
-              maxHeight: "300px",
+              maxHeight: "500px",
             }}
           >
             <form className="overflow-auto scrollbar-hide">
@@ -117,7 +128,7 @@ export default function CreateChallan() {
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
-                  <PaymentDetailsStep register={register} />{" "}
+                  <PaymentDetailsStep register={register} control={control} watch={watch}/>
                 </motion.div>
               )}
               {currStep == 3 && (
@@ -126,7 +137,7 @@ export default function CreateChallan() {
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
-                  <PaymentDetailsStep register={register} />{" "}
+                  <ConfirmChallanStep challan={getValues()} />
                 </motion.div>
               )}
             </form>
@@ -151,12 +162,20 @@ export default function CreateChallan() {
                 disabled={currStep == steps.length - 1}
                 color="primary"
                 variant="bordered"
+                className="group hover:bg-primary"
                 onClick={() => {
                   setPrevStep(currStep);
                   setCurrStep(currStep + 1);
                 }}
               >
-                <KeyboardArrowRightIcon />
+                <KeyboardArrowRightIcon
+                  sx={{
+                    color: "primary", 
+                    ".group:hover &": {
+                      color: "white", 
+                    }, 
+                  }}
+                />
               </Button>
             </div>
           </CardFooter>

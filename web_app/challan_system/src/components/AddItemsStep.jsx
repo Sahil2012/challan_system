@@ -12,12 +12,12 @@ export default function AddItemsStep({ control, setValue }) {
 
   const items = useWatch({
     control,
-    name: "items", // Watch the entire items array
+    name: "items", 
   });
 
   const discountPercentage = useWatch({
     control,
-    name: "discountPercentage", // Watch discount percentage
+    name: "discountPercentage", 
     defaultValue: 0,
   });
 
@@ -25,7 +25,7 @@ export default function AddItemsStep({ control, setValue }) {
   const totalSellingPrice =
     items?.reduce(
       (sum, item) =>
-        sum + (parseFloat(item.sellingPrice || 0) * parseFloat(item.quantity || 0)),
+        sum + (parseFloat(item.selling_price || 0) * parseFloat(item.quantity || 0)),
       0
     ) || 0;
 
@@ -44,20 +44,20 @@ export default function AddItemsStep({ control, setValue }) {
     const lastItem = items?.[items.length - 1];
     if (
       lastItem &&
-      (!lastItem.itemName ||
+      (!lastItem.item_name ||
         !lastItem.quantity ||
         !lastItem.mrp ||
-        !lastItem.sellingPrice)
+        !lastItem.selling_price)
     ) {
       alert("Please complete the previous row before adding a new one.");
       return;
     }
 
     append({
-      itemName: "",
+      item_name: "",
       quantity: "",
       mrp: "",
-      sellingPrice: "",
+      selling_price: "",
     });
   };
 
@@ -91,7 +91,7 @@ export default function AddItemsStep({ control, setValue }) {
               className="max-w-xs flex-1"
               size="sm"
               variant="bordered"
-              {...control.register(`items.${index}.itemName`)}
+              {...control.register(`items.${index}.item_name`)}
             />
 
             <Input
@@ -118,7 +118,7 @@ export default function AddItemsStep({ control, setValue }) {
               className="max-w-xs flex-1"
               size="sm"
               variant="bordered"
-              {...control.register(`items.${index}.sellingPrice`)}
+              {...control.register(`items.${index}.selling_price`)}
             />
 
             <div
