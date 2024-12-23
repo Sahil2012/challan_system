@@ -76,8 +76,8 @@ export default function CreateChallan() {
     <div>
       <Spacer y={18} />
       <Spacer y={4} />
-      <div className="flex items-center justify-center">
-        <Card className="w-[90%] max-h-[50%]">
+      <div className="flex items-center justify-center py-2">
+        <Card className="w-[90%] max-h-[80vh]">
           <CardHeader>
             <div className="flex justify-between w-[100%]">
               <div className="flex items-center">
@@ -85,7 +85,7 @@ export default function CreateChallan() {
                   {steps[currStep].title}
                 </span>
               </div>
-              <div className="w-[70%]">
+              <div >
                 <Stepper activeStep={currStep} alternativeLabel>
                   {steps.map((label) => (
                     <Step key={label.id}>
@@ -98,12 +98,12 @@ export default function CreateChallan() {
           </CardHeader>
           <Divider />
           <CardBody
-            className="overflow-y-auto"
             style={{
               maxHeight: "500px",
+              overflowY: "auto"
             }}
           >
-            <form className="overflow-auto scrollbar-hide">
+            <form className="overflow-y-auto scrollbar-hide">
               {currStep == 0 && (
                 <motion.div
                   initial={{ x: delta >= 0 ? "50%" : "-50%", opacity: 0 }}
