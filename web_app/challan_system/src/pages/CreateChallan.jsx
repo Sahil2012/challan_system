@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import ClientInfoStep from "../components/ClientInfoStep";
 import AddItemsStep from "../components/AddItemsStep";
 import PaymentDetailsStep from "../components/PaymentDetailsStep";
+
 import {
   Button,
   Card,
@@ -11,6 +12,7 @@ import {
   CardFooter,
   CardHeader,
   Spacer,
+  useDisclosure
 } from "@nextui-org/react";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
@@ -18,6 +20,7 @@ import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { motion } from "framer-motion";
 import ConfirmChallanStep from "../components/ConfirmChallanStep";
 import {CalendarDate, parseDate} from "@internationalized/date";
+import ConfirmationModal from "../components/ConfirmationModal";
 
 const steps = [
   {
@@ -71,6 +74,7 @@ export default function CreateChallan() {
   const [prevStep, setPrevStep] = useState(0);
   const delta = currStep - prevStep;
 
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
   return (
     <div>
@@ -157,7 +161,14 @@ export default function CreateChallan() {
               >
                 <KeyboardArrowLeftIcon />
               </Button>
-              <Button
+              {(currStep == steps.length-1) ? <div>
+                <Button
+                color="primary"
+                variant="bordered"
+                className="group hover:bg-primary"
+                onPress={onOpen}
+              >Confirm</Button>
+              </div> : <div><Button
                 isIconOnly
                 disabled={currStep == steps.length - 1}
                 color="primary"
@@ -176,11 +187,13 @@ export default function CreateChallan() {
                     }, 
                   }}
                 />
-              </Button>
+              </Button></div>}
+              
             </div>
           </CardFooter>
         </Card>
       </div>
+      <ConfirmationModal isOpen={isOpen} onOpenChange={onOpenChange}></ConfirmationModal>
     </div>
   );
 }
