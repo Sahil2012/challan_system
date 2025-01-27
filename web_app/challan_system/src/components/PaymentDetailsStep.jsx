@@ -14,6 +14,7 @@ const payment_options = [
   { key: "online", label: "Online" },
   { key: "cash", label: "Cash" },
   { key: "cheque", label: "Cheque" },
+  { key: "mix", label: "Mix"}
 ];
 
 export default function PaymentDetailsStep({ register, control, watch }) {
